@@ -1,0 +1,133 @@
+W01D3 - Accessing Data - Demo
+
+-Show ERD (right-click on northwind db --> Generate ERD)
+
+
+--QUESTION 1
+
+-- join orders and shippers --
+
+--checkout orders
+SELECT * FROM orders
+
+--checkout shippers
+SELECT * FROM shippers
+
+--perform inner join for now
+SELECT * FROM orders JOIN shippers ON shipvia = shipperid
+
+--best practice
+SELECT * FROM orders JOIN shippers ON orders.shipvia = shippers.shipperid
+
+--reformat with aliases
+SELECT *
+FROM orders AS o
+JOIN shippers AS s
+ON o.shipvia = s.shipperid
+
+
+--QUESTION 2
+
+--just certain columns
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+JOIN shippers AS s
+ON o.shipvia = s.shipperid
+
+
+--QUESTION 3
+
+--full outer join
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+FULL OUTER JOIN shippers AS s
+ON o.shipvia = s.shipperid
+
+--left join
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+LEFT JOIN shippers AS s
+ON o.shipvia = s.shipperid
+
+--right join
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+RIGHT JOIN shippers AS s
+ON o.shipvia = s.shipperid
+
+--left table with no matches
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+LEFT JOIN shippers AS s
+ON o.shipvia = s.shipperid
+WHERE s.shipperid IS NULL
+
+
+--QUESTION 4
+
+--right table with no matches
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+RIGHT JOIN shippers AS s
+ON o.shipvia = s.shipperid
+WHERE o.shipvia IS NULL
+
+
+--check both no matches at same time
+SELECT o.orderid, o.orderdate, o.freight, s.companyname
+FROM orders AS o
+FULL OUTER JOIN shippers AS s
+ON o.shipvia = s.shipperid
+WHERE o.shipvia IS NULL OR s.shipperid IS NULL
+
+
+--QUESTION 5
+
+--How many orders were shipped with each company (>0 first)?
+SELECT s.companyname, COUNT(*)
+FROM orders AS o
+JOIN shippers AS s
+ON o.shipvia = s.shipperid
+GROUP BY s.companyname
+--can add an orderby
+
+--How many orders were shipped with each company (all)? WRONG
+SELECT s.companyname, COUNT(*)
+FROM orders AS o
+FULL OUTER JOIN shippers AS s
+ON o.shipvia = s.shipperid
+GROUP BY s.companyname
+--can add an orderby
+
+--How many orders were shipped with each company (all)? CORRECT
+SELECT s.companyname, COUNT(o.orderid)
+FROM orders AS o
+FULL OUTER JOIN shippers AS s
+ON o.shipvia = s.shipperid
+GROUP BY s.companyname
+--can add an orderby
+
+
+--QUESTION 6
+
+--What was the total weight shipped by each company?
+SELECT s.companyname, SUM(o.freight)
+FROM orders AS o
+FULL OUTER JOIN shippers AS s
+ON o.shipvia = s.shipperid
+GROUP BY s.companyname
+--can add an orderby
+
+
+--QUESTION 7
+
+--What was the average weight shipped by each company?
+SELECT s.companyname, AVG(o.freight)
+FROM orders AS o
+FULL OUTER JOIN shippers AS s
+ON o.shipvia = s.shipperid
+GROUP BY s.companyname
+--can add an orderby
+
+
+
