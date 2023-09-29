@@ -1,0 +1,28 @@
+Combining Data
+
+
+Quick Comparison (ON VS USING during JOINS)
+	•	USING is a shorthand for joining on columns with the same name.
+	•	ON is more flexible and allows for complex conditions.
+	•	USING eliminates one of the duplicate columns, while ON does not.
+
+
+Subqueries
+	•	SELECT: Used to perform calculations or transformations that are then included as new columns in the main query's result set.
+	•	FROM: Used to create derived tables that the main query can join or further query.
+	•	WHERE: Used to filter records based on some condition that involves values in another table.
+
+
+### WHERE:
+- Purpose: Filters rows before any groupings or aggregations take place.
+- Works On: Individual rows.
+- **Aggregation: Cannot be used with aggregate functions like `SUM`, `AVG`, etc.
+- Example: `SELECT * FROM table WHERE column1 = 'value';`
+
+### HAVING:
+- Purpose: Filters rows after groupings and aggregations have been applied.
+- Works On: Groups of rows, typically used with `GROUP BY`.
+- Aggregation: Can be used with aggregate functions.
+- Example: `SELECT column1, COUNT(*) FROM table GROUP BY column1 HAVING COUNT(*) > 1;`
+
+In short, `WHERE` filters before aggregating, and `HAVING` filters after. Both can be used in the same query if needed.
