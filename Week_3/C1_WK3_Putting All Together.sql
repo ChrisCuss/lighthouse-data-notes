@@ -110,7 +110,7 @@ in descending order.*/
 
 -- Task 4 --
 
--- SELECT		c.customerid AS customerid,
+-- SELECT	c.customerid AS customerid,
 -- 			c.firstname||' '||c.lastname AS customer_name,
 -- 			SUM(i.total) AS total_spending
 -- FROM		customer c
@@ -148,6 +148,7 @@ in descending order.*/
 -- ORDER BY	total_genres DESC
 
 -- Task 7 --
+
 -- DROP TABLE IF EXISTS PopularAlbums;
 -- CREATE TABLE PopularAlbums(
 -- 			AlbumID INT PRIMARY KEY,
