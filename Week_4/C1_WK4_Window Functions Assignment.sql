@@ -1,0 +1,101 @@
+-- TASK 1 --
+--Write a query to calculate the average unit price of each product in each
+-- category, along with the average unit price of all products in that category.
+
+-- SELECT 
+--     p.ProductName,
+--     c.CategoryName,
+--     p.UnitPrice,
+--     AVG(p.UnitPrice) OVER (PARTITION BY c.CategoryID) AS "Avg Unit Price by Category",
+--     AVG(p.UnitPrice) OVER () AS "Avg Unit Price Overall"
+-- FROM 
+--     Products p
+-- JOIN 
+--     Categories c ON p.CategoryID = c.CategoryID
+-- ORDER BY 
+--     c.CategoryName, p.ProductName;
+
+-- TASK 2 --
+-- Write a query to calculate the running total of sales for each order,
+-- broken down by product and category.
+
+-- SELECT 
+--     o.OrderID,
+--     o.OrderDate,
+--     p.ProductID,
+--     c.CategoryName,
+--     od.Quantity,
+--     od.UnitPrice,
+--     SUM(od.Quantity * od.UnitPrice) OVER (PARTITION BY o.OrderID, c.CategoryName ORDER BY p.ProductID) AS "Running Total"
+-- FROM 
+--     Orders o
+-- JOIN 
+--     Order_Details od ON o.OrderID = od.OrderID
+-- JOIN 
+--     Products p ON od.ProductID = p.ProductID
+-- JOIN 
+--     Categories c ON p.CategoryID = c.CategoryID
+-- ORDER BY 
+--     o.OrderID, c.CategoryName, p.ProductID;
+
+-- TASK 3 --
+-- Write a query to calculate the rank of each product within its category based
+-- on the total quantity sold. If two or more products have the same total quantity
+-- sold, they should have the same rank.
+
+-- SELECT 
+--     p.ProductName,
+--     c.CategoryName,
+--     od.Quantity,
+--     RANK() OVER (PARTITION BY c.CategoryID ORDER BY SUM(od.Quantity) DESC) AS "Rank"
+-- FROM 
+--     Order_Details od
+-- JOIN 
+--     Products p ON od.ProductID = p.ProductID
+-- JOIN 
+--     Categories c ON p.CategoryID = c.CategoryID
+-- GROUP BY 
+--     p.ProductName, c.CategoryName, od.Quantity, c.CategoryID
+-- ORDER BY 
+--     c.CategoryName, "Rank", p.ProductName;
+
+-- TASK 4 --
+-- Write a query to calculate the difference in sales for each product compared to
+-- the average sales for all products in its category. The difference should be
+-- shown as a percentage of the average sales.
+
+-- SELECT 
+--     p.ProductName,
+--     c.CategoryName,
+--     od.Quantity,
+--     od.UnitPrice,
+--     (((SUM(od.Quantity * od.UnitPrice) OVER (PARTITION BY c.CategoryID) / COUNT(p.ProductID) OVER (PARTITION BY c.CategoryID)) - (od.Quantity * od.UnitPrice)) / (SUM(od.Quantity * od.UnitPrice) OVER (PARTITION BY c.CategoryID) / COUNT(p.ProductID) OVER (PARTITION BY c.CategoryID)) * 100) AS "Percentage Difference"
+-- FROM 
+--     Order_Details od
+-- JOIN 
+--     Products p ON od.ProductID = p.ProductID
+-- JOIN 
+--     Categories c ON p.CategoryID = c.CategoryID
+-- ORDER BY 
+--     c.CategoryName, p.ProductName;
+
+-- TASK 5 --
+-- Write a query to calculate the moving average of sales for each product
+-- over a period of three months, based on the order date. The moving average should
+-- be calculated for each day, and the result set should include the product name,
+-- order date, and moving average sales.
+
+-- SELECT 
+--     p.ProductName,
+--     o.orderdate,
+-- 	od.quantity,
+-- 	(od.unitprice*od.quantity) AS sales,
+-- 	AVG(od.unitprice*od.quantity) OVER(PARTITION BY p.productid
+-- 									ORDER BY o.orderdate
+-- 									RANGE BETWEEN INTERVAL '3 months' PRECEDING AND CURRENT ROW)
+-- 									AS moving_average
+	
+-- FROM	orders o
+-- JOIN	order_details od USING(orderid)
+-- JOIN	products p ON od.productid = p.productid
+-- ORDER BY	p.productname, o.orderdate
