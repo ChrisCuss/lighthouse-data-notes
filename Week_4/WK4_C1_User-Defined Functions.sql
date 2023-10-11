@@ -43,3 +43,19 @@
 -- order_details table using the function that you wrote for question 2 and then
 -- run it in a query.
 
+-- CREATE OR REPLACE FUNCTION TotalCostAllOrders()
+-- RETURNS float
+-- AS
+-- $$
+-- DECLARE
+-- 	Total_Cost_All_Orders float;
+-- BEGIN
+-- 	SELECT 	SUM(totalcost(unitprice, quantity, discount))
+-- 	INTO	Total_Cost_All_Orders
+-- 	FROM	order_details;
+-- 	RETURN	Total_Cost_All_Orders;
+-- END
+-- $$
+-- LANGUAGE PLPGSQL
+
+-- SELECT TotalCostAllOrders()
