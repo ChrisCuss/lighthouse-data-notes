@@ -44,6 +44,8 @@ GROUP BY
 HAVING
 	COUNT(orderid) >= 10 AND
 	AVG(od.discount) > 0.05
+ORDER BY
+	2 DESC
 
 
 -- Question 4
