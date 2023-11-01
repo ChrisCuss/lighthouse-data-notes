@@ -4,13 +4,12 @@
 -- Write SQL queries to determine the data types, null values, and unique values in each table.
 -- Analyze the results of your queries and document any potential data quality issues.
 
-SELECT 		Table_name,
+SELECT 		table_name,
 			column_name,
 			data_type,
 			is_nullable
 FROM		information_schema.columns
 WHERE		table_schema = 'public'
-			--AND column_name LIKE '%phone%'
 ORDER BY	table_name
 
 -- ID data types are not consistent event though most of them can be smallint data types
